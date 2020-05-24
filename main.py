@@ -26,6 +26,15 @@ app.layout = html.Div([
     ]),
     html.Div(id='tabs-content-example')
 ])
+
+@app.callback(Output('tabs-content-example', 'children'),
+              [Input('tabs-example', 'value')])
+def render_content(tab):
+    if tab =='tab-1-example':
+        return dropdown_tab.tab_1_layout
+    elif tab == 'tab-2-example':
+        return query_tab.tab_2_layout
+    
 ########### Run the app
 if __name__ == '__main__':
     server.run(debug=True, port=8080)
