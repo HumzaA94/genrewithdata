@@ -22,21 +22,21 @@ button_dict={
     'button_4':'nba_reference.player_stats_by_game'
     }
 
-# try:
-#     engine = sqlalchemy.create_engine(
-#         'postgresql://root:a12r324$lrjfSSp-3L14#^167fa@awsdatabase.cka4r7aphadv.us-east-2.rds.amazonaws.com/sportsdb')
-#
-# except:
-#     print("Unable to connect to db")
-#
-# def read_sql(string, engine=engine):
-#     try:
-#         df = pd.read_sql(string, con=engine)
-#         return df
-#
-#     except sqlalchemy.exc.ProgrammingError as e:
-#         msg=str(e)
-#         return msg
+try:
+    engine = sqlalchemy.create_engine(
+        'postgresql://root:a12r324$lrjfSSp-3L14#^167fa@awsdatabase.cka4r7aphadv.us-east-2.rds.amazonaws.com/sportsdb')
+
+except:
+    print("Unable to connect to db")
+
+def read_sql(string, engine=engine):
+    try:
+        df = pd.read_sql(string, con=engine)
+        return df
+
+    except sqlalchemy.exc.ProgrammingError as e:
+        msg=str(e)
+        return msg
 
 def create_table(div_id,df,page_no):
     return (dash_table.DataTable(
