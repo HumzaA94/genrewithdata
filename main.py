@@ -10,7 +10,8 @@ import pandas as pd
 import sqlalchemy
 import psycopg2
 
-from tabs import tab_functions as tf
+from tabs import dropdown_tab, query_tab, tab_functions as tf
+
 ########### Initiate the app
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -34,7 +35,7 @@ def render_content(tab):
         return dropdown_tab.tab_1_layout
     elif tab == 'tab-2-example':
         return query_tab.tab_2_layout
-    
+
 ########### Run the app
 if __name__ == '__main__':
     server.run(debug=True, port=8080)
