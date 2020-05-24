@@ -9,6 +9,7 @@ import plotly.graph_objs as go
 import pandas as pd
 import sqlalchemy
 import psycopg2
+import re
 
 from tabs import dropdown_tab, query_tab, tab_functions as tf
 
