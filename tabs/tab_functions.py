@@ -10,6 +10,8 @@ import pandas as pd
 import sqlalchemy
 import psycopg2
 
+import os
+
 dict_columns = ['TACTICS','PASS', 'CARRY', 'UNDER_PRESSURE', 'BALL_RECEIPT', 'COUNTERPRESS',
                 'INTERCEPTION', 'DRIBBLE', 'GOALKEEPER', 'SHOT', 'OUT', 'DUEL', 'BALL_RECOVERY',
                 'CLEARANCE', 'OFF_CAMERA', 'FOUL_WON', 'FOUL_COMMITTED', 'SUBSTITUTION',
@@ -23,9 +25,8 @@ button_dict={
     }
 
 try:
-    engine = sqlalchemy.create_engine(
-        'postgresql://root:a12r324$lrjfSSp-3L14#^167fa@awsdatabase.cka4r7aphadv.us-east-2.rds.amazonaws.com/sportsdb')
-
+    if os.environ.get('AWS_DATABASE_URL') is not None and '`' not in os.environ.get('AWS_DATABASE_URL'):
+        engine = sqlalchemy.create_engine('AWS_DATABASE_URL')
 except:
     print("Unable to connect to db")
 
