@@ -26,8 +26,8 @@ button_dict={
 #     engine = sqlalchemy.create_engine('AWS_DATABASE_URL')
 
 try:
-    engine = sqlalchemy.create_engine(
-        'postgresql://root:a12r324$lrjfSSp-3L14#^167fa@awsdatabase.cka4r7aphadv.us-east-2.rds.amazonaws.com/sportsdb')
+    engine = sqlalchemy.create_engine(os.environ.get('AWS_DATABASE_URL'))
+        # 'postgresql://root:a12r324$lrjfSSp-3L14#^167fa@awsdatabase.cka4r7aphadv.us-east-2.rds.amazonaws.com/sportsdb')
 
 except:
     print("Unable to connect to db")
