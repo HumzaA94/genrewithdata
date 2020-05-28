@@ -35,7 +35,50 @@ def render_content(tab):
         return dropdown_tab.tab_1_layout
     elif tab == 'tab-2-example':
         return query_tab.tab_2_layout
-# #callbacks for query_tab
+
+
+#callbacks for dropdown_tab
+@app.callback(Output('table-story','children'),
+              [Input('table-dropdown','value')])
+def get_data_background(val):
+    if val is None:
+        return html.Div(style={'display': 'none'})
+    else:
+        val1='SELECT * FROM {} LIMIT 10;'.format(val)
+        return html.Div(children=[val1])
+
+@app.callback(Output('table-filtering-container','children'),
+              [Input('table-dropdown','value')])
+def selecting_filtering_option(val):
+    if val is None:
+        return html.Div(style={'display': 'none'})
+    else:
+        if 'nba' in val:
+            keys=[1992, 1995, 2000, 2005, 2010, 2015, 2020]
+            values=['1992', '1995', '2000', '2005', '2010', '2015', '2020']
+            marks= dict(zip(keys, values))
+            return (
+                html.Div(id='nba-filtering-options',
+                         className='containers',
+                         children=[
+                            html.Div(id='test1'),
+                             dcc.Graph(id='nba-graph'),
+                             tf.generate_range_slider('nba-player-range',1992,2020,marks)]),
+                html.Div(id='nba-datatable',className='containers'))
+        else:
+            return (
+                html.Div(id='soccer-filtering-options',className='containers',
+                children=[
+                    dcc.Graph(id='soccer-graph'),
+                    html.Div(id='soccer-dropdown-options',
+                             children=[
+                                 tf.multi_value_dropdown('comp_dropdown', 'Filter through the Comptitions',competitions['COMPETITION_NAME']),
+                                 tf.multi_value_dropdown('season_dropdown', 'Filter through the Seasons',seasons['SEASON_NAME'])])]),
+                    html.Div(id='soccer-datatable',className='containers'),)
+
+
+
+#callbacks for query_tab
 @app.callback(Output('intermediate-value','children'),
               [Input('button_1', 'n_clicks'),
                Input('button_2', 'n_clicks'),
@@ -69,6 +112,8 @@ def displayClick(val):
                 if c in tf.dict_columns:
                     df[c]=df[c].astype(str)
             return html.Div(tf.create_table('query_table',df,10))
+
+
 ########### Run the app
 if __name__ == '__main__':
     server.run(debug=True, port=8080)
