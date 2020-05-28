@@ -6,6 +6,7 @@ import dash_table
 import dash
 
 import plotly.graph_objs as go
+import plotly.express as px
 import pandas as pd
 import sqlalchemy
 import psycopg2
