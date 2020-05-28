@@ -79,6 +79,70 @@ def selecting_filtering_option(val):
                                  tf.multi_value_dropdown('season_dropdown', 'Filter through the Seasons',seasons['SEASON_NAME'])])]),
                     html.Div(id='soccer-datatable',className='containers'),)
 
+@app.callback(Output('nba-graph','figure'),
+              [Input('table-dropdown','value'),
+               Input('nba-player-range','value')])
+def create_graph(tab_val,val2):
+    try:
+        min_val=val2[0]
+        max_val=val2[1]
+        string='''select distinct ("SEASON"),COUNT(distinct ("PLAYER NAME" )) as  "Number of Players in Season" from {}
+        where ("SEASON" >= '{}') and ("SEASON" <='{}')  group by 1 order by 1 ;'''.format(tab_val,min_val,max_val)
+        df=tf.read_sql(string)
+        fig = px.bar(df, x='SEASON', y='Number of Players in Season')
+        return fig
+    except ValueError as e:
+        return None
+
+@app.callback(Output('nba-datatable', 'children'),
+              [Input('table-dropdown','value'),
+               Input('nba-player-range','value')])
+def displayClick(tab_val,val2):
+    try:
+        min_val=val2[0]
+        max_val=val2[1]
+        string='''select * from {} where ("SEASON" >= '{}') and ("SEASON" <='{}');'''.format(tab_val,min_val,max_val)
+        df=tf.read_sql(string)
+        return html.Div(tf.create_table('nba_query_table',df,20))
+    except AttributeError as e:
+        return html.Div(style={'display':'none'})
+
+@app.callback(Output('soccer-graph','figure'),
+              [Input('table-dropdown','value'),
+               Input('comp_dropdown','value'),
+               Input('season_dropdown','value')])
+def create_graph(val1,val2,val3):
+    comp_val=[comp_dict[i] for i in val2]
+    comp_val=tuple(comp_val)
+    season_val=[season_dict[i] for i in val3]
+    season_val=tuple(season_val)
+    val1='statsbomb.competition_information'
+    val='{} {} {}'.format(val1,comp_val,season_val)
+    string='''
+    select "COMPETITION_NAME" ,"SEASON_NAME", count(distinct "MATCH_ID" ) as "Number of Games" from {}
+    where ("COMPETITION_ID" in {}) and ("SEASON_ID" in {})
+    group by 1,2
+    order by 1,2 ASC;'''.format(val1,comp_val,season_val)
+    df=tf.read_sql(string)
+    fig = px.bar(df, x='COMPETITION_NAME', y='Number of Games')
+    return fig
+
+@app.callback(Output('soccer-datatable', 'children'),
+              [Input('table-dropdown','value'),
+               Input('comp_dropdown','value'),
+               Input('season_dropdown','value')])
+def displayClick(tab_val,val2,val3):
+    comp_val=[comp_dict[i] for i in val2]
+    comp_val=tuple(comp_val)
+    season_val=[season_dict[i] for i in val3]
+    season_val=tuple(season_val)
+    tab_val='statsbomb.competition_information'
+    string='''select * from {} where ("COMPETITION_ID" in {}) and ("SEASON_ID" in {});'''.format(tab_val,comp_val,season_val)
+    df=tf.read_sql(string)
+    for c in df.columns:
+        if c in tf.dict_columns:
+            df[c]=df[c].astype(str)
+    return html.Div(tf.create_table('soccer_query_table',df,20))
 
 
 #callbacks for query_tab
