@@ -21,7 +21,6 @@ app.title='GenreWithData'
 ########### Set up the layout
 
 app.layout = html.Div([
-    tf.generate_banner('Improve the banner style, want to keep the get info here?'),
     dcc.Tabs(id="tabs-example", value='tab-1-example', children=[
         dcc.Tab(label='Tab One', value='tab-1-example'),
         dcc.Tab(label='Query Tab', value='tab-2-example'),
