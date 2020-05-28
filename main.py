@@ -14,11 +14,14 @@ import re
 from tabs import dropdown_tab, query_tab, tab_functions as tf
 
 ########### Initiate the app
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 app.title='GenreWithData'
-########### Set up the layout
+
+competitions=tf.read_sql('SELECT DISTINCT "COMPETITION_NAME", "COMPETITION_ID" from statsbomb.competition_information order by 1;')
+seasons=tf.read_sql('SELECT DISTINCT "SEASON_NAME", "SEASON_ID" from statsbomb.competition_information order by 1;')
+comp_dict=dict(zip(competitions['COMPETITION_NAME'],competitions['COMPETITION_ID']))
+season_dict=dict(zip(seasons['SEASON_NAME'],seasons['SEASON_ID']))
 
 app.layout = html.Div([
     dcc.Tabs(id="tabs-example", value='tab-1-example', children=[
