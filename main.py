@@ -26,8 +26,8 @@ season_dict=dict(zip(seasons['Seasons'],seasons['SEASON_ID']))
 
 app.layout = html.Div([
     dcc.Tabs(id="tabs-example", value='tab-1-example', children=[
-        dcc.Tab(label='Tab One', value='tab-1-example'),
-        dcc.Tab(label='Query Tab', value='tab-2-example'),
+        dcc.Tab(label='Filtering Option', value='tab-1-example'),
+        dcc.Tab(label='SQL Interaction', value='tab-2-example'),
     ]),
     html.Div(id='tabs-content-example')
 ])
