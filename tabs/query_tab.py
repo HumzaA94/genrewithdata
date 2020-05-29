@@ -5,7 +5,7 @@ import dash_core_components as dcc
 import dash_table
 import dash
 
-from tabs import tab_functions as tf
+from tabs import tab_functions as tf, variables as var
 
 tab_2_layout= html.Div([
     html.Div(id="information_container",
@@ -19,10 +19,10 @@ tab_2_layout= html.Div([
                  html.Div( id="table_list_container",
                           children=[
                               html.H4('List of Tables Available'),
-                              tf.generate_button(tf.button_dict['button_1'],"button_1"),
-                              tf.generate_button(tf.button_dict['button_2'],"button_2"),
-                              tf.generate_button(tf.button_dict['button_3'],"button_3"),
-                              tf.generate_button(tf.button_dict['button_4'],"button_4")],
+                              tf.generate_button(var.button_dict['button_1'],"button_1"),
+                              tf.generate_button(var.button_dict['button_2'],"button_2"),
+                              tf.generate_button(var.button_dict['button_3'],"button_3"),
+                              tf.generate_button(var.button_dict['button_4'],"button_4")],
                           className='containers')]),
     html.Div(id='intermediate-value', style={'display': 'none'}),
     html.Br(),

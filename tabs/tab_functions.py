@@ -13,21 +13,10 @@ import psycopg2
 import os
 
 
-dict_columns = ['TACTICS','PASS', 'CARRY', 'UNDER_PRESSURE', 'BALL_RECEIPT', 'COUNTERPRESS',
-                'INTERCEPTION', 'DRIBBLE', 'GOALKEEPER', 'SHOT', 'OUT', 'DUEL', 'BALL_RECOVERY',
-                'CLEARANCE', 'OFF_CAMERA', 'FOUL_WON', 'FOUL_COMMITTED', 'SUBSTITUTION',
-                'INJURY_STOPPAGE', 'MISCONTROL', '50_50', 'BAD_BEHAVIOUR', 'BLOCK', 'PLAYER_OFF',
-                'HOME_COUNTRY', 'AWAY_COUNTRY', 'STADIUM_COUNTRY', 'REFEREE_COUNTRY']
-button_dict={
-    'button_1':'statsbomb.competition_information',
-    'button_2':'statsbomb.match_information',
-    'button_3':'nba_reference.player_overall_seasons',
-    'button_4':'nba_reference.player_stats_by_game'
-    }
+
 
 try:
     engine = sqlalchemy.create_engine(os.environ.get('AWS_DATABASE_URL'))
-
 except:
     print("Unable to connect to db")
 
@@ -80,7 +69,7 @@ def generate_range_slider(div_id,min,max,marks):
 def single_value_dropdown(div_id,label_name,list1,text):
     return html.Div(
     children = [      #if more than 1 container will have the exact feature, a classname might be more convenient
-    html.Label(children=label_name),
+    html.H5(children=label_name),
     html.Br(),
     dcc.Dropdown(
             id= div_id, #container_id used to design the container of the dropdown in css,

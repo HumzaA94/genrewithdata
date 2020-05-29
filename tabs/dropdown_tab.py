@@ -5,10 +5,10 @@ import dash_core_components as dcc
 import dash_table
 import dash
 
-from tabs import tab_functions as tf
+from tabs import tab_functions as tf, variables as var
 import pandas as pd
 
-table_names=sorted(tf.button_dict.values(),reverse=False)
+table_names=sorted(var.button_dict.values(),reverse=False)
 
 tab_1_layout = html.Div(
     id="app-container",
@@ -18,5 +18,4 @@ tab_1_layout = html.Div(
         children=[
             tf.single_value_dropdown("table-dropdown","Choosing Your Data",table_names,"Select a table from the following..."),
             html.Div(id='table-story'),]),
-        # tf.multi_value_dropdown('multi-dropdown',"Continent selections",table_names),
         html.Div(id="table-filtering-container")])
