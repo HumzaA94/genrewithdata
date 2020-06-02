@@ -131,7 +131,7 @@ def create_graph(tab_val,val2):
         fig=go.Figure()
         fig.add_trace(go.Bar(
             x=[i for i in np.arange(min_val+1,max_val+1)],
-            y=df['Number of Players in Season'],
+            y=df['Number of Players in Season'].astype(int),
             marker_color='rgb(55, 83, 109)',
                 ))
         fig.update_layout(
@@ -142,25 +142,31 @@ def create_graph(tab_val,val2):
                 'xanchor': 'center',
                 'yanchor': 'top'},
             xaxis=dict(tickmode = 'linear',
-                       tick0=int(min_val),
+                       tick0=int(min_val+1),
                        dtick=1))
         return fig
     except ValueError as e:
         return None
-
 @app.callback(Output('nba-datatable', 'children'),
               [Input('table-dropdown','value'),
                Input('nba-player-range','value')])
 def displayClick(tab_val,val2):
-    time.sleep(2)
+    time.sleep(1)
     try:
+        start_time = time.time()
         min_val=val2[0]
         max_val=val2[1]
-        string='''select * from {} where ("SEASON" >= '{}') and ("SEASON" <='{}');'''.format(tab_val,min_val,max_val)
+        string='''select * from {} where ("SEASON" >= '{}') and ("SEASON" <='{}') order by "SEASON" ASC;'''.format(tab_val,min_val,max_val)
         df=tf.read_sql(string)
-        return html.Div(children=
-                        [dcc.Markdown(var.table_string),
-                         tf.create_table('nba_query_table',df,20)])
+        if tab_val=='nba_reference.player_stats_by_game':
+            return html.Div(children=
+                            [dcc.Markdown(var.bad_table_string),
+                            tf.create_table('nba_query_table',df.loc[:10000],25)])
+
+        else:
+            return html.Div(children=
+                            [dcc.Markdown(var.table_string),
+                             tf.create_table('nba_query_table',df,25)])
     except AttributeError as e:
         return html.Div(style={'display':'none'})
 
@@ -209,6 +215,7 @@ def displayClick(tab_val,val2,val3):
     tab_val='statsbomb.competition_information'
     string='''select * from {} where ("COMPETITION_ID" in {}) and ("SEASON_ID" in {});'''.format(tab_val,comp_val,season_val)
     df=tf.read_sql(string)
+    print("")
     for c in df.columns:
         if c in var.dict_columns:
             df[c]=df[c].astype(str)
@@ -254,4 +261,4 @@ def displayClick(val):
 
 
 if __name__ == '__main__':
-    server.run(debug=True, port=8080)
+    server.run(debug=False, port=8080)

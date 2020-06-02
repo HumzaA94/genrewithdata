@@ -4,8 +4,7 @@ import numpy as np
 
 nba_year_keys=[1992, 1995, 2000, 2005, 2010, 2015, 2020]
 nba_year_values=['1992', '1995', '2000', '2005', '2010', '2015', '2020']
-query_tab_sql_ph='''
-You can write your SQL query here.
+query_tab_sql_ph='''You can write your SQL query here.
 Not sure how the data looks like or the column names? Click on one of the tables to find out...
 Here is an example of a query to get you going:
 SELECT * FROM statsbomb.competition_information LIMIT 50;'''
@@ -69,4 +68,15 @@ table_string='''
              You can choose to explore the data furthermore using the features available with the Data Table selected.
 
              Whenever you are ready hit that export button, enjoy your explorations :)
+             '''
+
+bad_table_string='''
+             #### Advanced filtering
+
+             Due to some technical difficulties, the data you requested was not able to be made for you. Apologies in advance, the issue
+             is being addressed. In the mean time, enjoy the throwback data to 1990s, 2000s hoopers.
+
+             You can still interact with the data using the SQL interaction.
+
+             Whenever you are ready, hit that export button! enjoy your explorations :)
              '''
