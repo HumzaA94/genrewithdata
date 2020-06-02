@@ -16,7 +16,6 @@ import re
 
 from tabs import dropdown_tab, query_tab, tab_functions as tf, variables as var
 
-########### Initiate the app
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 app.title='GenreWithData'
@@ -65,7 +64,7 @@ def get_data_background(val):
 @app.callback(Output('table-filtering-container','children'),
               [Input('table-dropdown','value')])
 def selecting_filtering_option(val):
-    time.sleep(3)
+    time.sleep(2)
     if val is None:
         return html.Div(style={'display': 'none'})
     elif 'nba' in val:
@@ -122,6 +121,7 @@ def create_content(tab_val):
               [Input('table-dropdown','value'),
                Input('nba-player-range','value')])
 def create_graph(tab_val,val2):
+    time.sleep(1.2)
     try:
         min_val=val2[0]
         max_val=val2[1]
@@ -152,6 +152,7 @@ def create_graph(tab_val,val2):
               [Input('table-dropdown','value'),
                Input('nba-player-range','value')])
 def displayClick(tab_val,val2):
+    time.sleep(2)
     try:
         min_val=val2[0]
         max_val=val2[1]
@@ -168,6 +169,7 @@ def displayClick(tab_val,val2):
                Input('comp_dropdown','value'),
                Input('season_dropdown','value')])
 def create_graph(val1,val2,val3):
+    time.sleep(1.2)
     try:
         comp_val=[comp_dict[i] for i in val2]
         comp_val=tuple(comp_val)
@@ -199,6 +201,7 @@ def create_graph(val1,val2,val3):
                Input('comp_dropdown','value'),
                Input('season_dropdown','value')])
 def displayClick(tab_val,val2,val3):
+    time.sleep(2)
     comp_val=[comp_dict[i] for i in val2]
     comp_val=tuple(comp_val)
     season_val=[season_dict[i] for i in val3]
@@ -229,7 +232,7 @@ def update_query(btn1,btn2,btn3,btn4,btn21,val):
         if button_val=='button_21':
             return val
         else:
-            val1='SELECT * FROM {} LIMIT 10;'.format(var.button_dict[button_val])
+            val1='SELECT * FROM {} LIMIT 15;'.format(var.button_dict[button_val])
             return  val1
     except KeyError as e:
         return None
@@ -247,9 +250,8 @@ def displayClick(val):
             for c in df.columns:
                 if c in var.dict_columns:
                     df[c]=df[c].astype(str)
-            return html.Div(tf.create_table('query_table',df,10))
+            return html.Div(tf.create_table('query_table',df,15))
 
 
-########### Run the app
 if __name__ == '__main__':
     server.run(debug=True, port=8080)
