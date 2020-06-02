@@ -128,7 +128,6 @@ def create_graph(tab_val,val2):
         string='''select distinct ("SEASON"),COUNT(distinct ("PLAYER NAME" )) as  "Number of Players in Season" from {}
         where ("SEASON" >= '{}') and ("SEASON" <='{}')  group by 1 order by 1 ;'''.format(tab_val,min_val,max_val)
         df=tf.read_sql(string)
-        df.to_csv('test.csv')
         fig=go.Figure()
         fig.add_trace(go.Bar(
             x=[i for i in np.arange(min_val+1,max_val+1)],
