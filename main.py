@@ -169,28 +169,31 @@ def displayClick(tab_val,val2):
                Input('comp_dropdown','value'),
                Input('season_dropdown','value')])
 def create_graph(val1,val2,val3):
-    comp_val=[comp_dict[i] for i in val2]
-    comp_val=tuple(comp_val)
-    season_val=[season_dict[i] for i in val3]
-    season_val=tuple(season_val)
-    val1='statsbomb.competition_information'
-    val='{} {} {}'.format(val1,comp_val,season_val)
-    string='''
-    select "COMPETITION_NAME" as "Competitions","SEASON_NAME" as "Seasons", count(distinct "MATCH_ID" ) as "Number of Games" from {}
-    where ("COMPETITION_ID" in {}) and ("SEASON_ID" in {})
-    group by 1,2
-    order by 1 DESC,2 ASC;'''.format(val1,comp_val,season_val)
-    df=tf.read_sql(string)
-    fig = px.bar(df, x='Competitions', y='Number of Games',color='Seasons',barmode='group')
-    fig.update_layout(
-        title={
-            'text':"Number of Games per Season by Competition",
-            'y':0.9,
-            'x':0.5,
-            'xanchor': 'center',
-            'yanchor': 'top'},
-        showlegend=False)
-    return fig
+    try:
+        comp_val=[comp_dict[i] for i in val2]
+        comp_val=tuple(comp_val)
+        season_val=[season_dict[i] for i in val3]
+        season_val=tuple(season_val)
+        val1='statsbomb.competition_information'
+        val='{} {} {}'.format(val1,comp_val,season_val)
+        string='''
+        select "COMPETITION_NAME" as "Competitions","SEASON_NAME" as "Seasons", count(distinct "MATCH_ID" ) as "Number of Games" from {}
+        where ("COMPETITION_ID" in {}) and ("SEASON_ID" in {})
+        group by 1,2
+        order by 1 DESC,2 ASC;'''.format(val1,comp_val,season_val)
+        df=tf.read_sql(string)
+        fig = px.bar(df, x='Competitions', y='Number of Games',color='Seasons',barmode='group')
+        fig.update_layout(
+            title={
+                'text':"Number of Games per Season by Competition",
+                'y':0.9,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'},
+                showlegend=False)
+        return fig
+    except:
+        return None
 
 @app.callback(Output('soccer-datatable', 'children'),
               [Input('table-dropdown','value'),
