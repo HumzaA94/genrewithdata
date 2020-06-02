@@ -161,7 +161,7 @@ def displayClick(tab_val,val2):
         if tab_val=='nba_reference.player_stats_by_game':
             return html.Div(children=
                             [dcc.Markdown(var.bad_table_string),
-                            tf.create_table('nba_query_table',df.iloc[:4000,:],25)])
+                            tf.create_table('nba_query_table',df.iloc[:1000,:],25)])
 
         else:
             return html.Div(children=
