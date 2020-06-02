@@ -9,11 +9,7 @@ import plotly.graph_objs as go
 import pandas as pd
 import sqlalchemy
 import psycopg2
-
 import os
-
-
-
 
 try:
     engine = sqlalchemy.create_engine(os.environ.get('AWS_DATABASE_URL'))
@@ -69,7 +65,7 @@ def generate_range_slider(div_id,min,max,marks):
 def single_value_dropdown(div_id,label_name,list1,text):
     return html.Div(
     children = [      #if more than 1 container will have the exact feature, a classname might be more convenient
-    html.H5(children=label_name),
+    html.H4(children=label_name),
     html.Br(),
     dcc.Dropdown(
             id= div_id, #container_id used to design the container of the dropdown in css,
@@ -80,8 +76,7 @@ def single_value_dropdown(div_id,label_name,list1,text):
 def multi_value_dropdown(div_id,label_name,list1):
     return html.Div(
     children = [
-    html.Label(children=label_name),
-    html.Br(),
+    html.H5(children=label_name),
     dcc.Dropdown(
     id= div_id,
     options=[{'label': l, 'value': l} for l in list1],

@@ -1,4 +1,14 @@
 import pandas as pd
+import numpy as np
+
+
+nba_year_keys=[1992, 1995, 2000, 2005, 2010, 2015, 2020]
+nba_year_values=['1992', '1995', '2000', '2005', '2010', '2015', '2020']
+query_tab_sql_ph='''
+You can write your SQL query here.
+Not sure how the data looks like or the column names? Click on one of the tables to find out...
+Here is an example of a query to get you going:
+SELECT * FROM statsbomb.competition_information LIMIT 50;'''
 
 dict_columns = ['TACTICS','PASS', 'CARRY', 'UNDER_PRESSURE', 'BALL_RECEIPT', 'COUNTERPRESS',
                 'INTERCEPTION', 'DRIBBLE', 'GOALKEEPER', 'SHOT', 'OUT', 'DUEL', 'BALL_RECOVERY',
@@ -6,10 +16,10 @@ dict_columns = ['TACTICS','PASS', 'CARRY', 'UNDER_PRESSURE', 'BALL_RECEIPT', 'CO
                 'INJURY_STOPPAGE', 'MISCONTROL', '50_50', 'BAD_BEHAVIOUR', 'BLOCK', 'PLAYER_OFF',
                 'HOME_COUNTRY', 'AWAY_COUNTRY', 'STADIUM_COUNTRY', 'REFEREE_COUNTRY']
 button_dict={
-    'button_1':'statsbomb.competition_information',
-    'button_2':'statsbomb.match_information',
-    'button_3':'nba_reference.player_overall_seasons',
-    'button_4':'nba_reference.player_stats_by_game'
+    'button_1':'nba_reference.player_overall_seasons',
+    'button_2':'nba_reference.player_stats_by_game',
+    'button_3':'statsbomb.competition_information',
+    'button_4':'statsbomb.match_information'
     }
 
 intro_dict={

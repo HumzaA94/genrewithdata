@@ -1,12 +1,15 @@
 body {
     font-family: sans-serif;
-    /* background-color: #f2f5fa; */
+    background-color: #7395AE;
+    color: black;
+    font-family: "Cheltenham";
+    font-size:1.1rem;
 
 }
 
 .containers{
   border-radius: 5px;
-  background-color: #f2f5fa;
+  background-color: #B1A296;
   margin: 10px;
   padding: 15px;
   position: relative;
@@ -18,15 +21,16 @@ body {
 
 #app-container {
   width: 90%;
+  position: absolute;
+  left: 5%;
 
 }
 
 #table-selection-container {
   border-radius: 5px;
-  background-color: #f2f5fa;
+  background-color: #B1A296;
   margin: 10px;
   padding: 15px;
-  position: relative;
   box-shadow: 2px 2px 2px lightgrey;
   }
 
@@ -58,17 +62,23 @@ body {
   height:50px;
   width: 250px;
   padding: 1px;
-  font-size:0.7rem;
-  color: #989FCC ;
-  background-color: white;
+  font-size:0.85rem;
+  color: black ;
+  background-color: whitesmoke;
   text-transform: lowercase;
 }
 
 .buttons:hover {
   background-color: #989FCC ; /* Green */
-  color: white;
+  color: whitesmoke;
 }
 
 .tables{
   flex
 }
+
+/* #nba-graph,#soccer-graph{
+  margin-bottom: 2px;
+  padding-bottom: 2px;
+  border-bottom: 2px;
+} */

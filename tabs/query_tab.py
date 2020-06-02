@@ -12,7 +12,7 @@ tab_2_layout= html.Div([
              children=[
                  html.Div(id="sql_container",
                           children=[
-                              dcc.Textarea(id="sql_script",placeholder='You can write your SQL query here.\nNot sure how the data looks like or the column names? \nClick on one of the tables to find out.',
+                              dcc.Textarea(id="sql_script",placeholder=var.query_tab_sql_ph,
                                            style={'width': '80%', 'height': 300},),
                               dbc.Button('Submit',id="button_21",className="buttons",n_clicks=0)],
                           className='containers'),

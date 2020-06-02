@@ -8,8 +8,10 @@ import dash
 import plotly.graph_objs as go
 import plotly.express as px
 import pandas as pd
+import numpy as np
 import sqlalchemy
 import psycopg2
+import time
 import re
 
 from tabs import dropdown_tab, query_tab, tab_functions as tf, variables as var
@@ -29,7 +31,12 @@ app.layout = html.Div([
         dcc.Tab(label='Filtering Option', value='tab-1-example'),
         dcc.Tab(label='SQL Interaction', value='tab-2-example'),
     ]),
-    html.Div(id='tabs-content-example')
+    html.Div(id='tabs-content-example'),
+    dcc.Interval(
+            id='interval-component',
+            interval=5*1000, # in milliseconds
+            n_intervals=0
+        )
 ])
 
 @app.callback(Output('tabs-content-example', 'children'),
@@ -49,7 +56,7 @@ def get_data_background(val):
         return html.Div(style={'display': 'none'})
     else:
         val1='''
-        ##### Background of Data
+        #### Background of Data
 
         {}'''.format(var.intro_dict[val])
 
@@ -58,18 +65,18 @@ def get_data_background(val):
 @app.callback(Output('table-filtering-container','children'),
               [Input('table-dropdown','value')])
 def selecting_filtering_option(val):
+    time.sleep(3)
     if val is None:
         return html.Div(style={'display': 'none'})
     elif 'nba' in val:
-        keys=[1992, 1995, 2000, 2005, 2010, 2015, 2020]
-        values=['1992', '1995', '2000', '2005', '2010', '2015', '2020']
-        marks= dict(zip(keys, values))
+        marks= dict(zip(var.nba_year_keys, var.nba_year_values))
         return (
             html.Div(id='nba-filtering-options',
                      className='containers',
                      children=[
                          html.Div(id='filtering-story'),
                          dcc.Graph(id='nba-graph'),
+                         html.Br(),
                          html.Div(id='explaining-filter'),
                          tf.generate_range_slider('nba-player-range',1992,2020,marks)]),
             html.Div(id='nba-datatable',className='containers'))
@@ -79,6 +86,7 @@ def selecting_filtering_option(val):
                      children=[
                          html.Div(id='filtering-story'),
                          dcc.Graph(id='soccer-graph'),
+                         html.Br(),
                          html.Div(id='soccer-dropdown-options',
                                   children=[
                                       tf.multi_value_dropdown('comp_dropdown', 'Filter through the Comptitions',competitions['Competitions']),
@@ -120,7 +128,23 @@ def create_graph(tab_val,val2):
         string='''select distinct ("SEASON"),COUNT(distinct ("PLAYER NAME" )) as  "Number of Players in Season" from {}
         where ("SEASON" >= '{}') and ("SEASON" <='{}')  group by 1 order by 1 ;'''.format(tab_val,min_val,max_val)
         df=tf.read_sql(string)
-        fig = px.bar(df, x='SEASON', y='Number of Players in Season')
+        df.to_csv('test.csv')
+        fig=go.Figure()
+        fig.add_trace(go.Bar(
+            x=[i for i in np.arange(min_val+1,max_val+1)],
+            y=df['Number of Players in Season'],
+            marker_color='rgb(55, 83, 109)',
+                ))
+        fig.update_layout(
+            title={
+                'text':"Number of Players Involved per Season between {} - {}".format(min_val+1,max_val),
+                'y':0.9,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'},
+            xaxis=dict(tickmode = 'linear',
+                       tick0=int(min_val),
+                       dtick=1))
         return fig
     except ValueError as e:
         return None
@@ -155,9 +179,17 @@ def create_graph(val1,val2,val3):
     select "COMPETITION_NAME" as "Competitions","SEASON_NAME" as "Seasons", count(distinct "MATCH_ID" ) as "Number of Games" from {}
     where ("COMPETITION_ID" in {}) and ("SEASON_ID" in {})
     group by 1,2
-    order by 1,2 ASC;'''.format(val1,comp_val,season_val)
+    order by 1 DESC,2 ASC;'''.format(val1,comp_val,season_val)
     df=tf.read_sql(string)
-    fig = px.bar(df, x='Competitions', y='Number of Games')
+    fig = px.bar(df, x='Competitions', y='Number of Games',color='Seasons',barmode='group')
+    fig.update_layout(
+        title={
+            'text':"Number of Games per Season by Competition",
+            'y':0.9,
+            'x':0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'},
+        showlegend=False)
     return fig
 
 @app.callback(Output('soccer-datatable', 'children'),
@@ -218,4 +250,4 @@ def displayClick(val):
 
 ########### Run the app
 if __name__ == '__main__':
-    server.run(debug=False, port=8080)
+    server.run(debug=True, port=8080)
