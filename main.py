@@ -156,14 +156,21 @@ def displayClick(tab_val,val2):
         start_time = time.time()
         min_val=val2[0]
         max_val=val2[1]
-        string='''select * from {} where ("SEASON" >= '{}') and ("SEASON" <='{}') order by "PLAYER NAME" DESC, "SEASON" ASC; '''.format(tab_val,min_val,max_val)
-        df=tf.read_sql(string)
         if tab_val=='nba_reference.player_stats_by_game':
+            df=pd.DataFrame()
+            for i in np.arange(5):
+                counter=i*40000
+                string='''select * from {} where ("SEASON" >= '{}') and ("SEASON" <='{}')
+                order by "PLAYER NAME" ASC, "DATE" ASC LIMIT 40000 OFFSET {}; '''.format(tab_val,min_val,max_val,counter)
+                input=tf.read_sql(string)
+                df=pd.concat([df,input], ignore_index = True)
             return html.Div(children=
                             [dcc.Markdown(var.bad_table_string),
-                            tf.create_table('nba_query_table',df.iloc[:1000,:],25)])
+                            tf.create_table('nba_query_table',df,25)])
 
         else:
+            string='''select * from {} where ("SEASON" >= '{}') and ("SEASON" <='{}') order by "PLAYER NAME" ASC, "SEASON" ASC; '''.format(tab_val,min_val,max_val)
+            df=tf.read_sql(string)
             return html.Div(children=
                             [dcc.Markdown(var.table_string),
                              tf.create_table('nba_query_table',df,25)])
