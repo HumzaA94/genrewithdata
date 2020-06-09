@@ -158,8 +158,8 @@ def displayClick(tab_val,val2):
         max_val=val2[1]
         if tab_val=='nba_reference.player_stats_by_game':
             df=pd.DataFrame()
-            for i in np.arange(3):
-                counter=i*40000
+            for i in np.arange(2):
+                counter=i*30000
                 string='''select * from {} where ("SEASON" >= '{}') and ("SEASON" <='{}')
                 order by "PLAYER NAME" ASC, "DATE" ASC LIMIT 40000 OFFSET {}; '''.format(tab_val,min_val,max_val,counter)
                 input=tf.read_sql(string)
@@ -182,7 +182,6 @@ def displayClick(tab_val,val2):
                Input('comp_dropdown','value'),
                Input('season_dropdown','value')])
 def create_graph(val1,val2,val3):
-    time.sleep(1.2)
     try:
         comp_val=[comp_dict[i] for i in val2]
         comp_val=tuple(comp_val)
@@ -214,7 +213,6 @@ def create_graph(val1,val2,val3):
                Input('comp_dropdown','value'),
                Input('season_dropdown','value')])
 def displayClick(tab_val,val2,val3):
-    time.sleep(2)
     comp_val=[comp_dict[i] for i in val2]
     comp_val=tuple(comp_val)
     season_val=[season_dict[i] for i in val3]
