@@ -121,7 +121,6 @@ def create_content(tab_val):
               [Input('table-dropdown','value'),
                Input('nba-player-range','value')])
 def create_graph(tab_val,val2):
-    time.sleep(1.2)
     try:
         min_val=val2[0]
         max_val=val2[1]
@@ -151,7 +150,6 @@ def create_graph(tab_val,val2):
               [Input('table-dropdown','value'),
                Input('nba-player-range','value')])
 def displayClick(tab_val,val2):
-    time.sleep(1)
     try:
         start_time = time.time()
         min_val=val2[0]
@@ -159,9 +157,9 @@ def displayClick(tab_val,val2):
         if tab_val=='nba_reference.player_stats_by_game':
             df=pd.DataFrame()
             for i in np.arange(2):
-                counter=i*30000
+                counter=i*28000
                 string='''select * from {} where ("SEASON" >= '{}') and ("SEASON" <='{}')
-                order by "PLAYER NAME" ASC, "DATE" ASC LIMIT 40000 OFFSET {}; '''.format(tab_val,min_val,max_val,counter)
+                order by "SEASON_ID" DESC, "PLAYER NAME" ASC, "DATE" ASC LIMIT 40000 OFFSET {}; '''.format(tab_val,min_val,max_val,counter)
                 input=tf.read_sql(string)
                 df=pd.concat([df,input], ignore_index = True)
             return html.Div(children=
